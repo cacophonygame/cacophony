@@ -8,17 +8,17 @@
         <!-- Babylon.js -->
         <script src="https://code.jquery.com/pep/0.4.2/pep.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
-        <script src="cannon.js"></script>
-        <script src="Oimo.js"></script>
-        <script src="earcut.min.js"></script>
-        <script src="babylon.js"></script>
-        <script src="inspector/babylon.inspector.bundle.js"></script>
-        <script src="materialsLibrary/babylonjs.materials.min.js"></script>
-        <script src="proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js"></script>
-        <script src="postProcessesLibrary/babylonjs.postProcess.min.js"></script>
-        <script src="loaders/babylonjs.loaders.js"></script>
-        <script src="serializers/babylonjs.serializers.min.js"></script>
-        <script src="gui/babylon.gui.min.js"></script>
+        <script src="babylondist/cannon.js"></script>
+        <script src="babylondist/Oimo.js"></script>
+        <script src="babylondist/earcut.min.js"></script>
+        <script src="babylondist/babylon.js"></script>
+        <script src="babylondist/inspector/babylon.inspector.bundle.js"></script>
+        <script src="babylondist/materialsLibrary/babylonjs.materials.min.js"></script>
+        <script src="babylondist/proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js"></script>
+        <script src="babylondist/postProcessesLibrary/babylonjs.postProcess.min.js"></script>
+        <script src="babylondist/loaders/babylonjs.loaders.js"></script>
+        <script src="babylondist/serializers/babylonjs.serializers.min.js"></script>
+        <script src="babylondist/gui/babylon.gui.min.js"></script>
 
         <style>
             html, body {
@@ -51,33 +51,7 @@
         engine = new BABYLON.Engine(canvas, true);
         //canvas.style.width = '100%';
         //canvas.style.height = '100%';
-/*var createScene = function () {
 
-    // This creates a basic Babylon Scene object (non-mesh)
-    var scene = new BABYLON.Scene(engine);
-
-    // This creates and positions a free camera (non-mesh)
-    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
-
-    // This targets the camera to scene origin
-    camera.setTarget(BABYLON.Vector3.Zero());
-
-    // This attaches the camera to the canvas
-    camera.attachControl(canvas, true);
-
-    // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
-    var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
-
-    // Default intensity is 1. Let's dim the light a small amount
-    light.intensity = 0.7;
-
-    // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
-    var sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 2, scene);
-
-    // Move the sphere upward 1/2 its height
-    sphere.position.y = 1;
-
-};*/
 var ColorHolder = 0;
         var createScene = function () {
                     var moveFlag = false;
@@ -119,7 +93,7 @@ var ColorHolder = 0;
             // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
             var sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 4, scene);
 
-            // Move the sphere upward 1/2 its height
+            // sphere bottomright
             sphere.position.y = 3;
             sphere.position.x = 5;
             sphere.position.z = 4;
@@ -127,7 +101,7 @@ var ColorHolder = 0;
             // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
             var sphere2 = BABYLON.Mesh.CreateSphere("sphere2", 16, 4, scene);
 
-            // Move the sphere upward 1/2 its height
+            // sphere2 upperleft
             sphere2.position.y = 3;
             sphere2.position.x = -5;
             sphere2.position.z = -4
@@ -135,7 +109,7 @@ var ColorHolder = 0;
             // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
             var sphere3 = BABYLON.Mesh.CreateSphere("sphere3", 16, 4, scene);
 
-            // Move the sphere upward 1/2 its height
+            // sphere3 upperright
             sphere3.position.y = 3;
             sphere3.position.z = 5;
             sphere3.position.x = -4;
@@ -143,7 +117,7 @@ var ColorHolder = 0;
             // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
             var sphere4 = BABYLON.Mesh.CreateSphere("sphere4", 16, 4, scene);
 
-            // Move the sphere upward 1/2 its height
+            // sphere4 bottomleft
             sphere4.position.y = 3;
             sphere4.position.z = -5;
             sphere4.position.x = 4;
@@ -151,7 +125,8 @@ var ColorHolder = 0;
 
 
     
-
+        //used now instead of onPointerDown/up/move which may or may not still work.
+        //still need to understand how to fully use pickinfo and what could go in null values
         scene.onPointerObservable.add(function (evt) {
             if (evt.type === BABYLON.PointerEventTypes.POINTERDOWN) {
                 var pickInfo = scene.pick(scene.pointerX,scene.pointerY,null,null,camera);
@@ -162,7 +137,7 @@ var ColorHolder = 0;
 
 
 
-       //create some ground 
+       //create some ground with a heightmap
         var ground = CreateGround(scene);
    
 
@@ -181,6 +156,8 @@ var ColorHolder = 0;
                 }
                 return ground;
             }
+
+            //handle spheres material changes
         function colorfoo(){
 
             
