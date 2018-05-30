@@ -61,7 +61,7 @@
             scene.clearColor = new BABYLON.Color3(0, 0, .2);
             //scene.fogEnabled = true; didn't work may be old
         
-            var camera = new BABYLON.ArcRotateCamera("Camera", 0, 0.8, 30, BABYLON.Vector3(0,0,0), scene);
+            var camera = new BABYLON.ArcRotateCamera("Camera", 0, 0.8, 100, BABYLON.Vector3(0,0,0), scene);
             camera.attachControl(canvas, true);
 
         	var light = new BABYLON.HemisphericLight("hemi", new BABYLON.Vector3(0, 5, 0), scene);
@@ -92,36 +92,36 @@
 
 
             // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
-            var sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 4, scene);
+            var sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 10, scene);
 
             // sphere bottomright
-            sphere.position.y = 3;
-            sphere.position.x = 5;
-            sphere.position.z = 4;
+            sphere.position.y = 10;
+            sphere.position.x = 10;
+            sphere.position.z = 8;
             sphere.material = myMaterial2;
             // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
-            var sphere2 = BABYLON.Mesh.CreateSphere("sphere2", 16, 4, scene);
+            var sphere2 = BABYLON.Mesh.CreateSphere("sphere2", 16, 10, scene);
 
             // sphere2 upperleft
-            sphere2.position.y = 3;
-            sphere2.position.x = -5;
-            sphere2.position.z = -4
+            sphere2.position.y = 10;
+            sphere2.position.x = -10;
+            sphere2.position.z = -8
             sphere2.material = myMaterial2;
             // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
-            var sphere3 = BABYLON.Mesh.CreateSphere("sphere3", 16, 4, scene);
+            var sphere3 = BABYLON.Mesh.CreateSphere("sphere3", 16, 10, scene);
 
             // sphere3 upperright
-            sphere3.position.y = 3;
-            sphere3.position.z = 5;
-            sphere3.position.x = -4;
+            sphere3.position.y = 10;
+            sphere3.position.z = 10;
+            sphere3.position.x = -8;
             sphere3.material = myMaterial2;
             // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
-            var sphere4 = BABYLON.Mesh.CreateSphere("sphere4", 16, 4, scene);
+            var sphere4 = BABYLON.Mesh.CreateSphere("sphere4", 16, 10, scene);
 
             // sphere4 bottomleft
-            sphere4.position.y = 3;
-            sphere4.position.z = -5;
-            sphere4.position.x = 4;
+            sphere4.position.y = 10;
+            sphere4.position.z = -10;
+            sphere4.position.x = 8;
             sphere4.material = myMaterial2;
 
 
