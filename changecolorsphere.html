@@ -53,10 +53,10 @@
         //canvas.style.width = '100%';
         //canvas.style.height = '100%';
 
-var ColorHolder = 0;
+//var ColorHolder = 0;
         var createScene = function () {
-                    var moveFlag = false;
-                  //  var ColorHolder = 0;
+            
+            var ColorHolder = 0;
         	var scene = new BABYLON.Scene(engine);
             scene.clearColor = new BABYLON.Color3(0, 0, .2);
             //scene.fogEnabled = true; didn't work may be old
@@ -76,8 +76,8 @@ var ColorHolder = 0;
             //myMaterial.specularColor = new BABYLON.Color3(0.5, 0.6, 0.87);
             //myMaterial.emissiveColor = new BABYLON.Color3(0.1, 0.2, 1);
             //myMaterial.ambientColor = new BABYLON.Color3(0.23, 0.98, 0.53);
-            myMaterial.diffuseTexture = new BABYLON.Texture("images/bricks.jpg", scene);
-            myMaterial.emissiveTexture = new BABYLON.Texture("images/bricks.jpg", scene);
+            myMaterial.diffuseTexture = new BABYLON.Texture("babylondist/images/bricks.jpg", scene);
+            myMaterial.emissiveTexture = new BABYLON.Texture("babylondist/images/bricks.jpg", scene);
             myMaterial.alpha = 0.7;
             var myMaterial2 = new BABYLON.StandardMaterial("myMaterial", scene);
 
@@ -85,8 +85,8 @@ var ColorHolder = 0;
             //myMaterial.specularColor = new BABYLON.Color3(0.5, 0.6, 0.87);
             //myMaterial.emissiveColor = new BABYLON.Color3(0.1, 0.2, 1);
             //myMaterial.ambientColor = new BABYLON.Color3(0.23, 0.98, 0.53);
-            myMaterial2.diffuseTexture = new BABYLON.Texture("images/lightningcircle.jpg", scene);
-            myMaterial2.emissiveTexture = new BABYLON.Texture("images/lightning.jpg", scene);
+            myMaterial2.diffuseTexture = new BABYLON.Texture("babylondist/images/lightningcircle.jpg", scene);
+            myMaterial2.emissiveTexture = new BABYLON.Texture("babylondist/images/lightning.jpg", scene);
             myMaterial2.alpha = 0.7;
 
 
@@ -144,13 +144,13 @@ var ColorHolder = 0;
    
 
         function CreateGround(scene) {
-        var ground = new BABYLON.Mesh.CreateGroundFromHeightMap("ground", "images/hmapsquare.png", 1000, 1000, 20, 0, 200, scene, false, OnGroundCreated);
+        var ground = new BABYLON.Mesh.CreateGroundFromHeightMap("ground", "babylondist/images/hmapsquare.png", 1000, 1000, 20, 0, 200, scene, false, OnGroundCreated);
 
         console.log(ground);
     
             function OnGroundCreated() {
                 var groundMaterial = new BABYLON.StandardMaterial("groundMaterial", scene);
-                groundMaterial.diffuseTexture = new BABYLON.Texture("images/checkers.jpg", scene);
+                groundMaterial.diffuseTexture = new BABYLON.Texture("babylondist/images/checkers.jpg", scene);
                 ground.material = groundMaterial;
                 ground.checkCollisions = true;
                 console.log(ground);
