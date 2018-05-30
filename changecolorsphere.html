@@ -128,6 +128,7 @@ var ColorHolder = 0;
     
         //used now instead of onPointerDown/up/move which may or may not still work.
         //still need to understand how to fully use pickinfo and what could go in null values
+        //first null is something about predicate function second null is fastcheck boolean
         scene.onPointerObservable.add(function (evt) {
             if (evt.type === BABYLON.PointerEventTypes.POINTERDOWN) {
                 var pickInfo = scene.pick(scene.pointerX,scene.pointerY,null,null,camera);
