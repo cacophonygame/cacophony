@@ -70,24 +70,24 @@ var ColorHolder = 0;
             gizmo.visibility = 0;
 
             
-                var myMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
+            var myMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
 
-                //myMaterial.diffuseColor = new BABYLON.Color3(1, 0, 1);
-                //myMaterial.specularColor = new BABYLON.Color3(0.5, 0.6, 0.87);
-                //myMaterial.emissiveColor = new BABYLON.Color3(0.1, 0.2, 1);
-                //myMaterial.ambientColor = new BABYLON.Color3(0.23, 0.98, 0.53);
-                myMaterial.diffuseTexture = new BABYLON.Texture("images/bricks.jpg", scene);
-                myMaterial.emissiveTexture = new BABYLON.Texture("images/bricks.jpg", scene);
-                myMaterial.alpha = 0.7;
-                var myMaterial2 = new BABYLON.StandardMaterial("myMaterial", scene);
+            //myMaterial.diffuseColor = new BABYLON.Color3(1, 0, 1);
+            //myMaterial.specularColor = new BABYLON.Color3(0.5, 0.6, 0.87);
+            //myMaterial.emissiveColor = new BABYLON.Color3(0.1, 0.2, 1);
+            //myMaterial.ambientColor = new BABYLON.Color3(0.23, 0.98, 0.53);
+            myMaterial.diffuseTexture = new BABYLON.Texture("images/bricks.jpg", scene);
+            myMaterial.emissiveTexture = new BABYLON.Texture("images/bricks.jpg", scene);
+            myMaterial.alpha = 0.7;
+            var myMaterial2 = new BABYLON.StandardMaterial("myMaterial", scene);
 
-                //myMaterial.diffuseColor = new BABYLON.Color3(1, 0, 1);
-                //myMaterial.specularColor = new BABYLON.Color3(0.5, 0.6, 0.87);
-                //myMaterial.emissiveColor = new BABYLON.Color3(0.1, 0.2, 1);
-                //myMaterial.ambientColor = new BABYLON.Color3(0.23, 0.98, 0.53);
-                myMaterial2.diffuseTexture = new BABYLON.Texture("images/lightningcircle.jpg", scene);
-                myMaterial2.emissiveTexture = new BABYLON.Texture("images/lightning.jpg", scene);
-                myMaterial2.alpha = 0.7;
+            //myMaterial.diffuseColor = new BABYLON.Color3(1, 0, 1);
+            //myMaterial.specularColor = new BABYLON.Color3(0.5, 0.6, 0.87);
+            //myMaterial.emissiveColor = new BABYLON.Color3(0.1, 0.2, 1);
+            //myMaterial.ambientColor = new BABYLON.Color3(0.23, 0.98, 0.53);
+            myMaterial2.diffuseTexture = new BABYLON.Texture("images/lightningcircle.jpg", scene);
+            myMaterial2.emissiveTexture = new BABYLON.Texture("images/lightning.jpg", scene);
+            myMaterial2.alpha = 0.7;
 
 
 
@@ -126,16 +126,16 @@ var ColorHolder = 0;
 
 
     
-        //used now instead of onPointerDown/up/move which may or may not still work.
-        //still need to understand how to fully use pickinfo and what could go in null values
-        //first null is something about predicate function second null is fastcheck boolean
-        scene.onPointerObservable.add(function (evt) {
+            //used now instead of onPointerDown/up/move which may or may not still work.
+            //still need to understand how to fully use pickinfo and what could go in null values
+            //first null is something about predicate function second null is fastcheck boolean
+            scene.onPointerObservable.add(function (evt) {
             if (evt.type === BABYLON.PointerEventTypes.POINTERDOWN) {
                 var pickInfo = scene.pick(scene.pointerX,scene.pointerY,null,null,camera);
                 console.log('picked Mesh', pickInfo);
                 colorfoo();
-            }
-        });
+                }
+            });
 
 
 
@@ -145,69 +145,68 @@ var ColorHolder = 0;
 
         function CreateGround(scene) {
         var ground = new BABYLON.Mesh.CreateGroundFromHeightMap("ground", "images/hmapsquare.png", 1000, 1000, 20, 0, 200, scene, false, OnGroundCreated);
-        //var ground = BABYLON.Mesh.CreateGround("myGround", 60, 60, 50, scene);
-        //OnGroundCreated();
+
         console.log(ground);
     
-        function OnGroundCreated() {
-            var groundMaterial = new BABYLON.StandardMaterial("groundMaterial", scene);
-            groundMaterial.diffuseTexture = new BABYLON.Texture("images/checkers.jpg", scene);
-            ground.material = groundMaterial;
-            ground.checkCollisions = true;
-            console.log(ground);
+            function OnGroundCreated() {
+                var groundMaterial = new BABYLON.StandardMaterial("groundMaterial", scene);
+                groundMaterial.diffuseTexture = new BABYLON.Texture("images/checkers.jpg", scene);
+                ground.material = groundMaterial;
+                ground.checkCollisions = true;
+                console.log(ground);
                 }
                 return ground;
-            }
+         }
 
             //handle spheres material changes
         function colorfoo(){
 
             
-            if (ColorHolder > 5)
-            {
-                ColorHolder = 0;
-            }
-            if (ColorHolder === 0){
-                sphere.material = myMaterial;
-                sphere2.material = myMaterial2;
-                sphere3.material = myMaterial2;
-                sphere4.material = myMaterial2;
-            }
-            if (ColorHolder === 1){
-                sphere.material = myMaterial2;
-                sphere2.material = myMaterial;
-                sphere3.material = myMaterial2;
-                sphere4.material = myMaterial2;
-            }            
-            if (ColorHolder === 2){
-                sphere.material = myMaterial2;
-                sphere2.material = myMaterial2;
-                sphere3.material = myMaterial;
-                sphere4.material = myMaterial2;
-            }            
-            if (ColorHolder === 3){
-                sphere.material = myMaterial2;
-                sphere2.material = myMaterial2;
-                sphere3.material = myMaterial2;
-                sphere4.material = myMaterial;
-            }
-            if (ColorHolder === 4){
-                sphere.material = myMaterial2;
-                sphere2.material = myMaterial2;
-                sphere3.material = myMaterial2;
-                sphere4.material = myMaterial2;
-            }
-            if (ColorHolder === 5){
-                sphere.material = myMaterial;
-                sphere2.material = myMaterial;
-                sphere3.material = myMaterial;
-                sphere4.material = myMaterial;   
-            }
-            console.log(ColorHolder);            
-            ColorHolder = ColorHolder + 1;
-};
+                if (ColorHolder > 5)
+                {
+                    ColorHolder = 0;
+                }
+                if (ColorHolder === 0){
+                    sphere.material = myMaterial;
+                    sphere2.material = myMaterial2;
+                    sphere3.material = myMaterial2;
+                    sphere4.material = myMaterial2;
+                }
+                if (ColorHolder === 1){
+                    sphere.material = myMaterial2;
+                    sphere2.material = myMaterial;
+                    sphere3.material = myMaterial2;
+                    sphere4.material = myMaterial2;
+                }            
+                if (ColorHolder === 2){
+                    sphere.material = myMaterial2;
+                    sphere2.material = myMaterial2;
+                    sphere3.material = myMaterial;
+                    sphere4.material = myMaterial2;
+                }            
+                if (ColorHolder === 3){
+                    sphere.material = myMaterial2;
+                    sphere2.material = myMaterial2;
+                    sphere3.material = myMaterial2;
+                    sphere4.material = myMaterial;
+                }
+                if (ColorHolder === 4){
+                    sphere.material = myMaterial2;
+                    sphere2.material = myMaterial2;
+                    sphere3.material = myMaterial2;
+                    sphere4.material = myMaterial2;
+                }
+                if (ColorHolder === 5){
+                    sphere.material = myMaterial;
+                    sphere2.material = myMaterial;
+                    sphere3.material = myMaterial;
+                    sphere4.material = myMaterial;   
+                }
+                console.log(ColorHolder);            
+                ColorHolder = ColorHolder + 1;
+            };//end colorfoo
         return scene;
-        }
+        }//end createScene()
         
         var scene = createScene();
 
