@@ -162,7 +162,7 @@
         function colorfoo(){
 
             
-                if (ColorHolder > 5)
+                if (ColorHolder > 6)
                 {
                     ColorHolder = 0;
                 }
@@ -201,6 +201,12 @@
                     sphere2.material = myMaterial;
                     sphere3.material = myMaterial;
                     sphere4.material = myMaterial;   
+                }
+                if (ColorHolder === 6){
+                    sphere.material = myMaterial2;
+                    sphere2.material = myMaterial2;
+                    sphere3.material = myMaterial2;
+                    sphere4.material = myMaterial2;   
                 }
                 console.log(ColorHolder);            
                 ColorHolder = ColorHolder + 1;
