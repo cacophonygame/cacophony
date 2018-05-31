@@ -22,22 +22,22 @@
   <script>
 
     // Get the canvas element
-    var canvas = document.getElementById("renderCanvas");
+    const canvas = document.getElementById("renderCanvas");
 
     // Generate the BABYLON 3D engine
-    var engine = new BABYLON.Engine(canvas, true);
+    const engine = new BABYLON.Engine(canvas, true);
 
     /******* Add the create scene function ******/
-    var createScene = function () {
+    const createScene = function () {
 
-      // GAME_CODE
+      // GAME CODE
 
       return scene;
     };
     /******* End of the create scene function ******/
 
     //Call the createScene function
-    var scene = createScene();
+    const scene = createScene();
 
     // Register a render loop to repeatedly render the scene
     engine.runRenderLoop(function () {
