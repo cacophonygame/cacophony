@@ -105,6 +105,9 @@
             sphere.checkCollisions = true;
             //ball.physicsImposter = new BABYLON.PhysicsImpostor(ball, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 0.08, restitution: 0.9 }, scene);
             sphere.physicsImpostor = new BABYLON.PhysicsImpostor(sphere, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: 0.9}, scene);
+            sphere.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,1,0)); 
+            //using quanternian instead of Vector3
+//            sphere.physicsImpostor.setAngularVelocity(new BABYLON.Quaternian(10, 0, 10, 0));
             // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
             var sphere2 = BABYLON.Mesh.CreateSphere("sphere2", 16, 10, scene);
 
@@ -116,6 +119,7 @@
             sphere2.checkCollisions = true;
             //ball.physicsImposter = new BABYLON.PhysicsImpostor(ball, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 0.08, restitution: 0.9 }, scene);
             sphere2.physicsImpostor = new BABYLON.PhysicsImpostor(sphere2, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: 0.9}, scene);
+            sphere2.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,-1,0)); 
 
             // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
             var sphere3 = BABYLON.Mesh.CreateSphere("sphere3", 16, 10, scene);
@@ -128,6 +132,7 @@
             sphere3.checkCollisions = true;
             //ball.physicsImposter = new BABYLON.PhysicsImpostor(ball, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 0.08, restitution: 0.9 }, scene);
             sphere3.physicsImpostor = new BABYLON.PhysicsImpostor(sphere3, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: 0.9}, scene);
+            sphere3.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,1,0)); 
             // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
             var sphere4 = BABYLON.Mesh.CreateSphere("sphere4", 16, 10, scene);
 
@@ -139,7 +144,7 @@
             sphere4.checkCollisions = true;
             //ball.physicsImposter = new BABYLON.PhysicsImpostor(ball, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 0.08, restitution: 0.9 }, scene);
             sphere4.physicsImpostor = new BABYLON.PhysicsImpostor(sphere4, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: 0.9}, scene);
-
+            sphere4.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,-1,0)); 
     
             //used now instead of onPointerDown/up/move which may or may not still work.
             //still need to understand how to fully use pickinfo and what could go in null values
