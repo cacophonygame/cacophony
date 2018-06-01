@@ -60,6 +60,8 @@
         	var scene = new BABYLON.Scene(engine);
             scene.clearColor = new BABYLON.Color3(0, 0, .2);
             //scene.fogEnabled = true; didn't work may be old
+            scene.gravity = new BABYLON.Vector3(0, -9.81, 0);
+            scene.enablePhysics();
         
             var camera = new BABYLON.ArcRotateCamera("Camera", 0, 0.8, 100, BABYLON.Vector3(0,0,0), scene);
             camera.attachControl(canvas, true);
@@ -93,12 +95,16 @@
 
             // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
             var sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 10, scene);
+            
 
             // sphere bottomright
             sphere.position.y = 10;
             sphere.position.x = 10;
             sphere.position.z = 8;
             sphere.material = myMaterial2;
+            sphere.checkCollisions = true;
+            //ball.physicsImposter = new BABYLON.PhysicsImpostor(ball, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 0.08, restitution: 0.9 }, scene);
+            sphere.physicsImpostor = new BABYLON.PhysicsImpostor(sphere, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: 0.9}, scene);
             // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
             var sphere2 = BABYLON.Mesh.CreateSphere("sphere2", 16, 10, scene);
 
@@ -107,6 +113,10 @@
             sphere2.position.x = -10;
             sphere2.position.z = -8
             sphere2.material = myMaterial2;
+            sphere2.checkCollisions = true;
+            //ball.physicsImposter = new BABYLON.PhysicsImpostor(ball, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 0.08, restitution: 0.9 }, scene);
+            sphere2.physicsImpostor = new BABYLON.PhysicsImpostor(sphere2, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: 0.9}, scene);
+
             // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
             var sphere3 = BABYLON.Mesh.CreateSphere("sphere3", 16, 10, scene);
 
@@ -115,6 +125,9 @@
             sphere3.position.z = 10;
             sphere3.position.x = -8;
             sphere3.material = myMaterial2;
+            sphere3.checkCollisions = true;
+            //ball.physicsImposter = new BABYLON.PhysicsImpostor(ball, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 0.08, restitution: 0.9 }, scene);
+            sphere3.physicsImpostor = new BABYLON.PhysicsImpostor(sphere3, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: 0.9}, scene);
             // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
             var sphere4 = BABYLON.Mesh.CreateSphere("sphere4", 16, 10, scene);
 
@@ -123,7 +136,9 @@
             sphere4.position.z = -10;
             sphere4.position.x = 8;
             sphere4.material = myMaterial2;
-
+            sphere4.checkCollisions = true;
+            //ball.physicsImposter = new BABYLON.PhysicsImpostor(ball, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 0.08, restitution: 0.9 }, scene);
+            sphere4.physicsImpostor = new BABYLON.PhysicsImpostor(sphere4, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: 0.9}, scene);
 
     
             //used now instead of onPointerDown/up/move which may or may not still work.
@@ -153,6 +168,8 @@
                 groundMaterial.diffuseTexture = new BABYLON.Texture("babylondist/images/checkers.jpg", scene);
                 ground.material = groundMaterial;
                 ground.checkCollisions = true;
+                ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground,
+            BABYLON.PhysicsImpostor.HeightmapImpostor, { mass: 0 }, scene);
                 console.log(ground);
                 }
                 return ground;
