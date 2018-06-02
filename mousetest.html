@@ -93,6 +93,12 @@
                     var myMaterial4 = new BABYLON.StandardMaterial("myMaterial4", scene);
                     myMaterial4.diffuseTexture = new BABYLON.Texture("babylondist/images/cracks.jpg", scene);
 
+                  
+                    var myMaterial5 = new BABYLON.StandardMaterial("myMaterial5", scene);
+    
+                    // there was another , true in the video texture doesn't seem to mind it gone and now looks like example on site
+                    var videoTexture = new BABYLON.VideoTexture("video", ["babylondist/vids/fxcolors.webm"], scene, true);
+                    myMaterial5.diffuseTexture = videoTexture;
                     // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
                     var sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 10, scene);
                     
@@ -104,8 +110,8 @@
                     sphere.material = myMaterial3;
                     sphere.checkCollisions = true;
                     //ball.physicsImposter = new BABYLON.PhysicsImpostor(ball, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 0.08, restitution: 0.9 }, scene);
-                    //sphere.physicsImpostor = new BABYLON.PhysicsImpostor(sphere, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: 0.9}, scene);
-                    //sphere.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,1,0)); 
+                    sphere.physicsImpostor = new BABYLON.PhysicsImpostor(sphere, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: 0.9}, scene);
+                    sphere.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,1,0)); 
                     //using quanternian instead of Vector3
         //            sphere.physicsImpostor.setAngularVelocity(new BABYLON.Quaternian(10, 0, 10, 0));
                     // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
@@ -119,8 +125,8 @@
                     sphere2.material = myMaterial3;
                     sphere2.checkCollisions = true;
                     //ball.physicsImposter = new BABYLON.PhysicsImpostor(ball, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 0.08, restitution: 0.9 }, scene);
-                    //sphere2.physicsImpostor = new BABYLON.PhysicsImpostor(sphere2, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: 0.9}, scene);
-                    //sphere2.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,-1,0)); 
+                    sphere2.physicsImpostor = new BABYLON.PhysicsImpostor(sphere2, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: 0.9}, scene);
+                    sphere2.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,-1,0)); 
                     //    sphere2.material.diffuseColor = new BABYLON.Color3.Yellow;
                     // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
                     var sphere3 = BABYLON.Mesh.CreateSphere("sphere3", 16, 10, scene);
@@ -132,8 +138,8 @@
                     sphere3.material = myMaterial3;
                     sphere3.checkCollisions = true;
                     //ball.physicsImposter = new BABYLON.PhysicsImpostor(ball, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 0.08, restitution: 0.9 }, scene);
-                    //sphere3.physicsImpostor = new BABYLON.PhysicsImpostor(sphere3, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: 0.9}, scene);
-                    //sphere3.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,1,0)); 
+                    sphere3.physicsImpostor = new BABYLON.PhysicsImpostor(sphere3, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: 0.9}, scene);
+                    sphere3.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,1,0)); 
                     // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
                     var sphere4 = BABYLON.Mesh.CreateSphere("sphere4", 16, 10, scene);
         
@@ -144,8 +150,8 @@
                     sphere4.material = myMaterial3;
                     sphere4.checkCollisions = true;
                     //ball.physicsImposter = new BABYLON.PhysicsImpostor(ball, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 0.08, restitution: 0.9 }, scene);
-                    //sphere4.physicsImpostor = new BABYLON.PhysicsImpostor(sphere4, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: 0.9}, scene);
-                    //sphere4.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,-1,0)); 
+                    sphere4.physicsImpostor = new BABYLON.PhysicsImpostor(sphere4, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: 0.9}, scene);
+                    sphere4.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,-1,0)); 
         
         
                    
@@ -215,10 +221,14 @@
                         // button 2 for right mouse
             console.log( "Long Press With Button " + evt.sourceEvent.button);
             if (evt.sourceEvent.button === 0){
-                            sphere.material = myMaterial;
-                            sphere2.material = myMaterial2;
-                            sphere3.material = myMaterial3;
-                            sphere4.material = myMaterial4;
+                            sphere.material = myMaterial5;
+                            sphere2.material = myMaterial5;
+                            sphere3.material = myMaterial5;
+                            sphere4.material = myMaterial5;
+                                    videoTexture.video.play();
+
+
+    
             }
         }
         ));
