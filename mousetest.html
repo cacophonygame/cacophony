@@ -214,6 +214,12 @@
                         //button 1 for middle mouse
                         // button 2 for right mouse
             console.log( "Long Press With Button " + evt.sourceEvent.button);
+            if (evt.sourceEvent.button === 0){
+                            sphere.material = myMaterial;
+                            sphere2.material = myMaterial2;
+                            sphere3.material = myMaterial3;
+                            sphere4.material = myMaterial4;
+            }
         }
         ));
         
@@ -244,6 +250,7 @@
                         }
                         return ground;
                  }
+            //pickAction(ground);
         
                     //handle spheres material changes
                 function colorfoo(){
