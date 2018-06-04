@@ -9,18 +9,32 @@
 
   <link rel="stylesheet" type="text/css" href="static/style.css">
 
+  <!--
   <script src="https://cdn.babylonjs.com/babylon.js"></script>
   <script src="https://preview.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
   <script src="https://code.jquery.com/pep/0.4.1/pep.js"></script>
+  -->
+
+  <!-- Babylon.js -->
+  <script src="https://code.jquery.com/pep/0.4.2/pep.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
+  <script src="babylondist/cannon.js"></script>
+  <script src="babylondist/Oimo.js"></script>
+  <script src="babylondist/earcut.min.js"></script>
+  <script src="babylondist/babylon.js"></script>
+  <script src="babylondist/inspector/babylon.inspector.bundle.js"></script>
+  <script src="babylondist/materialsLibrary/babylonjs.materials.min.js"></script>
+  <script src="babylondist/proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js"></script>
+  <script src="babylondist/postProcessesLibrary/babylonjs.postProcess.min.js"></script>
+  <script src="babylondist/loaders/babylonjs.loaders.js"></script>
+  <script src="babylondist/serializers/babylonjs.serializers.min.js"></script>
+  <script src="babylondist/gui/babylon.gui.min.js"></script>
 
 </head>
 <body>
-
-
   <canvas id="renderCanvas" touch-action="none"></canvas>
 
   <script>
-
     // Define the canvas element
     const canvas = document.getElementById("renderCanvas");
 
@@ -29,14 +43,164 @@
 
     /******* Add the create scene function ******/
     const createScene = function () {
+      
+      // Variables
+      const ColorHolder = 0;
 
-      // GAME CODE
+      // Scenes
+      const scene = new BABYLON.Scene(engine);
+      scene.clearColor = new BABYLON.Color3(0, 0, .2);
+
+      // Cameras
+      const camera = new BABYLON.ArcRotateCamera("Camera", 0, 0.8, 100, BABYLON.Vector3(0,0,0), scene);
+      camera.attachControl(canvas, true);
+
+      // Lights
+      const light = new BABYLON.HemisphericLight("hemi", new BABYLON.Vector3(0, 5, 0), scene);
+
+      // Objects  
+      const gizmo = BABYLON.Mesh.CreateBox("gizmotron", 5, scene);
+      gizmo.visibility = 0;
+
+        // Spheres
+
+          // sphere bottomright
+          // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
+          const sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 10, scene);
+          sphere.position.y = 10;
+          sphere.position.x = 10;
+          sphere.position.z = 8;
+          sphere.material = myMaterial2;
+
+          // sphere2 upperleft
+          // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
+          const sphere2 = BABYLON.Mesh.CreateSphere("sphere2", 16, 10, scene);
+          sphere2.position.y = 10;
+          sphere2.position.x = -10;
+          sphere2.position.z = -8
+          sphere2.material = myMaterial2;
+
+          // sphere3 upperright
+          // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
+          const sphere3 = BABYLON.Mesh.CreateSphere("sphere3", 16, 10, scene);
+          sphere3.position.y = 10;
+          sphere3.position.z = 10;
+          sphere3.position.x = -8;
+          sphere3.material = myMaterial2;
+
+          // sphere4 bottomleft
+          // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
+          const sphere4 = BABYLON.Mesh.CreateSphere("sphere4", 16, 10, scene);
+          sphere4.position.y = 10;
+          sphere4.position.z = -10;
+          sphere4.position.x = 8;
+          sphere4.material = myMaterial2;
+
+        // Ground
+        const ground = CreateGround(scene);
+   
+        function CreateGround(scene) {
+          const ground = new BABYLON.Mesh.CreateGroundFromHeightMap("ground", "babylondist/images/hmapsquare.png", 1000, 1000, 20, 0, 200, scene, false, OnGroundCreated);
+          console.log(ground);
+    
+            function OnGroundCreated() {
+              const groundMaterial = new BABYLON.StandardMaterial("groundMaterial", scene);
+              groundMaterial.diffuseTexture = new BABYLON.Texture("babylondist/images/checkers.jpg", scene);
+              ground.material = groundMaterial;
+              ground.checkCollisions = true;
+              console.log(ground);
+            }
+            
+            return ground;
+         }
+
+      // Materials
+      const myMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
+
+      myMaterial.diffuseTexture = new BABYLON.Texture("babylondist/images/bricks.jpg", scene);
+      myMaterial.emissiveTexture = new BABYLON.Texture("babylondist/images/bricks.jpg", scene);
+      myMaterial.alpha = 0.7;
+      const myMaterial2 = new BABYLON.StandardMaterial("myMaterial", scene);
+
+      myMaterial2.diffuseTexture = new BABYLON.Texture("babylondist/images/lightningcircle.jpg", scene);
+      myMaterial2.emissiveTexture = new BABYLON.Texture("babylondist/images/lightning.jpg", scene);
+      myMaterial2.alpha = 0.7;
+
+      // Actions
+      // Object Picker
+      scene.onPointerObservable.add(function (evt) {
+        if (evt.type === BABYLON.PointerEventTypes.POINTERDOWN) {
+          var pickInfo = scene.pick(scene.pointerX,scene.pointerY,null,null,camera);
+          console.log('picked Mesh', pickInfo);
+          colorfoo();
+        }
+      });
+
+      // Material change
+      function colorfoo() {    
+
+        if (ColorHolder > 6) {
+          ColorHolder = 0;
+        }
+
+        if (ColorHolder === 0) {
+            sphere.material = myMaterial;
+            sphere2.material = myMaterial2;
+            sphere3.material = myMaterial2;
+            sphere4.material = myMaterial2;
+        }
+
+        if (ColorHolder === 1) {
+            sphere.material = myMaterial2;
+            sphere2.material = myMaterial;
+            sphere3.material = myMaterial2;
+            sphere4.material = myMaterial2;
+        }
+
+        if (ColorHolder === 2) {
+            sphere.material = myMaterial2;
+            sphere2.material = myMaterial2;
+            sphere3.material = myMaterial;
+            sphere4.material = myMaterial2;
+        }
+
+        if (ColorHolder === 3) {
+            sphere.material = myMaterial2;
+            sphere2.material = myMaterial2;
+            sphere3.material = myMaterial2;
+            sphere4.material = myMaterial;
+        }
+
+        if (ColorHolder === 4) {
+            sphere.material = myMaterial2;
+            sphere2.material = myMaterial2;
+            sphere3.material = myMaterial2;
+            sphere4.material = myMaterial2;
+        }
+
+        if (ColorHolder === 5) {
+            sphere.material = myMaterial;
+            sphere2.material = myMaterial;
+            sphere3.material = myMaterial;
+            sphere4.material = myMaterial;   
+        }
+
+        if (ColorHolder === 6) {
+            sphere.material = myMaterial2;
+            sphere2.material = myMaterial2;
+            sphere3.material = myMaterial2;
+            sphere4.material = myMaterial2;   
+        }
+        
+        console.log(ColorHolder);            
+        ColorHolder = ColorHolder + 1;
+      };
 
       return scene;
     };
     /******* End of the create scene function ******/
 
-    //Call the createScene function
+    // Call the createScene function
     const scene = createScene();
 
     // Register a render loop to repeatedly render the scene
