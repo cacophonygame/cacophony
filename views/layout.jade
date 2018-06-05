@@ -4,4 +4,15 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
+    block navBar
+      div.container
+            ul.col-md-12.row
+                a(href="/")
+                    li.col-md-3 Home
+                a(href="#")
+                    li.col-md-3.col-md-offset-1 Register
+                a(href="#")
+                    li.col-md-3 Login
+                a(href="/game")
+                    li.col-md-3 Game
     block content
