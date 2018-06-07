@@ -1,5 +1,26 @@
+//- game.jade
+
 extends layout
 
 block content
   h1= title
   p Welcome to #{title}
+  canvas(id='renderCanvas' touch-action='none')
+
+block js
+  <!-- Babylon -->  
+  script(src="https://code.jquery.com/pep/0.4.2/pep.min.js")
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js")
+  script(src="../babylondist/cannon.js")
+  script(src="../babylondist/Oimo.js")
+  script(src="../babylondist/earcut.min.js")
+  script(src="../babylondist/babylon.js")
+  script(src="../babylondist/inspector/babylon.inspector.bundle.js")
+  script(src="../babylondist/materialsLibrary/babylonjs.materials.min.js")
+  script(src="../babylondist/proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js")
+  script(src="../babylondist/postProcessesLibrary/babylonjs.postProcess.min.js")
+  script(src="../babylondist/loaders/babylonjs.loaders.js")
+  script(src="../babylondist/serializers/babylonjs.serializers.min.js")
+  script(src="../babylondist/gui/babylon.gui.min.js")
+  <!-- Game -->
+  script(src='../public/javascripts/game.js')

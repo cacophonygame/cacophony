@@ -1,5 +1,5 @@
 doctype html
-html
+html(lang="en")
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
@@ -9,10 +9,13 @@ html
             ul.col-md-12.row
                 a(href="/")
                     li.col-md-3 Home
-                a(href="#")
+                // a(href="/register")
                     li.col-md-3.col-md-offset-1 Register
-                a(href="#")
+                // a(href="/login")
                     li.col-md-3 Login
                 a(href="/game")
                     li.col-md-3 Game
     block content
+    block footer
+    block js
+
