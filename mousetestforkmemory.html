@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <title>Babylon.js sample code</title>
+
+        <!-- Babylon.js -->
+        <script src="https://code.jquery.com/pep/0.4.2/pep.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
+        <script src="babylondist/cannon.js"></script>
+        <script src="babylondist/Oimo.js"></script>
+        <script src="babylondist/earcut.min.js"></script>
+        <script src="babylondist/babylon.js"></script>
+        <script src="babylondist/inspector/babylon.inspector.bundle.js"></script>
+        <script src="babylondist/materialsLibrary/babylonjs.materials.min.js"></script>
+        <script src="babylondist/proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js"></script>
+        <script src="babylondist/postProcessesLibrary/babylonjs.postProcess.min.js"></script>
+        <script src="babylondist/loaders/babylonjs.loaders.js"></script>
+        <script src="babylondist/serializers/babylonjs.serializers.min.js"></script>
+        <script src="babylondist/gui/babylon.gui.min.js"></script>
+        <script src="babylondist/loaders/babylon.objFileLoader.js"></script>
+
+
+        <style>
+            html, body {
+                overflow: hidden;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            #renderCanvas {
+                width: 100%;
+                height: 100%;
+                touch-action: none;
+            }
+        </style>
+    </head>
+<body>
+    <canvas id="renderCanvas"></canvas>
+    <script>
+        var canvas = document.getElementById("renderCanvas");
+        var engine = new BABYLON.Engine(canvas, true);
+
+                var canvas = document.getElementById("renderCanvas");
+        
+                //use commented out lines to add more detail to visual. not sure how much more rendering power this takes though.
+                //canvas.style.width = "1000px";
+                //canvas.style.height = "1000px";
+                engine = new BABYLON.Engine(canvas, true);
+                //canvas.style.width = '100%';
+                //canvas.style.height = '100%';
+    //key booleans deprecated
+    var isWPressed = false;
+    var isSPressed = false;
+    var isAPressed = false;
+    var isDPressed = false;
+
+    //move mesh variables
+    //var startPosition;
+    //var endPosition;
+    //var totalDistance;
+    //var startTime;
+    //var moveFlag;
+        var createScene = function () {
+
+ 
+  BABYLON.AbstractMesh.prototype.colorTo = function (channel, amt, speed) {
+    var ease = new BABYLON.CubicEase();
+    ease.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEINOUT);
+    // console.log(eval('this.material.' + channel));
+    BABYLON.Animation.CreateAndStartAnimation('at7', this, 'material.' + channel, speed, 30, this.material[channel], this.material[channel].add(amt), 0, ease);
+}
+                    var ColorHolder = 0;
+                	var scene = new BABYLON.Scene(engine);
+                    scene.clearColor = new BABYLON.Color3(0, 0, .2);
+                    //scene.fogEnabled = true; didn't work may be old
+                    scene.gravity = new BABYLON.Vector3(0, -9.81, 0);
+                    scene.enablePhysics();
+                    scene.actionManager = new BABYLON.ActionManager(scene);
+                    correctWay = [];
+                    guessWay = [];
+                
+                    var camera = new BABYLON.ArcRotateCamera("Camera", 0, 0.8, 100, BABYLON.Vector3(0,0,0), scene);
+                    //var camera = new BABYLON.FreeCamera("camera", new BABYLON.Vector3(0, 5, 100), scene);
+
+                    camera.attachControl(canvas, true);
+        
+                	var light = new BABYLON.HemisphericLight("hemi", new BABYLON.Vector3(0, 5, 0), scene);
+                     
+                    var gizmo = BABYLON.Mesh.CreateBox("gizmotron", 5, scene);
+                    gizmo.visibility = 0;
+
+                    var earthgroundMaterial = new BABYLON.StandardMaterial("earthgroundMaterial", scene);
+                    earthgroundMaterial.diffuseColor = new BABYLON.Color3(0,.5,0);
+                    
+                    var earthwaterMaterial = new BABYLON.StandardMaterial("earthwaterMaterial", scene);
+                    earthwaterMaterial.diffuseColor = new BABYLON.Color3(0,0,.7);
+                    
+
+                    var buildingMaterial = new BABYLON.StandardMaterial("buildingMaterial", scene);
+                    buildingMaterial.diffuseColor = new BABYLON.Color3(0,0,.7);
+                    //buildingMaterial.ambientColor = new BABYLON.Color3(0,0,.7); 
+                    //buildingMaterial.specularColor = new BABYLON.Color3(0.5, .2, 0);
+                    //buildingMaterial.emissiveColor = new BABYLON.Color3(0, .1, 0);
+
+                    var buildingMaterial2 = new BABYLON.StandardMaterial("buildingMaterial", scene);
+                    buildingMaterial2.diffuseColor = new BABYLON.Color3(0,0,.7);
+                    //buildingMaterial.ambientColor = new BABYLON.Color3(0,0,.7); 
+                    //buildingMaterial.specularColor = new BABYLON.Color3(0.5, .2, 0);
+                    //buildingMaterial.emissiveColor = new BABYLON.Color3(0, .1, 0);
+
+                    var sphereMaterial1 = new BABYLON.StandardMaterial("sphereMaterial1", scene);
+                    sphereMaterial1.diffuseColor = new BABYLON.Color3(0,0,.7);
+                    var sphereMaterial2 = new BABYLON.StandardMaterial("sphereMaterial2", scene);
+                    sphereMaterial2.diffuseColor = new BABYLON.Color3(0,0,.7);
+                    var sphereMaterial3 = new BABYLON.StandardMaterial("sphereMaterial3", scene);
+                    sphereMaterial3.diffuseColor = new BABYLON.Color3(0,0,.7);
+                    var sphereMaterial4 = new BABYLON.StandardMaterial("sphereMaterial4", scene);
+                    sphereMaterial4.diffuseColor = new BABYLON.Color3(0,0,.7);
+                    var master = BABYLON.Mesh.CreateBox("master", 2, scene);
+                    master.visibility = 0;
+
+                    var master2 = BABYLON.Mesh.CreateBox("master2", 2, scene);
+                    master2.visibility = 0;
+
+                    var myMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
+        
+                    //myMaterial.diffuseColor = new BABYLON.Color3(1, 0, 1);
+                    //myMaterial.specularColor = new BABYLON.Color3(0.5, 0.6, 0.87);
+                    //myMaterial.emissiveColor = new BABYLON.Color3(0.1, 0.2, 1);
+                    //myMaterial.ambientColor = new BABYLON.Color3(0.23, 0.98, 0.53);
+                    myMaterial.diffuseTexture = new BABYLON.Texture("babylondist/images/bricks.jpg", scene);
+                    myMaterial.emissiveTexture = new BABYLON.Texture("babylondist/images/bricks.jpg", scene);
+                    myMaterial.alpha = 0.7;
+                    var myMaterial2 = new BABYLON.StandardMaterial("myMaterial2", scene);
+        
+                    //myMaterial.diffuseColor = new BABYLON.Color3(1, 0, 1);
+                    //myMaterial.specularColor = new BABYLON.Color3(0.5, 0.6, 0.87);
+                    //myMaterial.emissiveColor = new BABYLON.Color3(0.1, 0.2, 1);
+                    //myMaterial.ambientColor = new BABYLON.Color3(0.23, 0.98, 0.53);
+                    myMaterial2.diffuseTexture = new BABYLON.Texture("babylondist/images/lightningcircle.jpg", scene);
+                    myMaterial2.emissiveTexture = new BABYLON.Texture("babylondist/images/lightning.jpg", scene);
+                    myMaterial2.alpha = 0.7;
+        
+                    var myMaterial3 = new BABYLON.StandardMaterial("myMaterial3", scene);
+                    myMaterial3.diffuseTexture = new BABYLON.Texture("babylondist/images/earthflatflip.jpg", scene);
+        
+                    var myMaterial4 = new BABYLON.StandardMaterial("myMaterial4", scene);
+                    myMaterial4.diffuseTexture = new BABYLON.Texture("babylondist/images/cracks.jpg", scene);
+
+                  
+                    var myMaterial5 = new BABYLON.StandardMaterial("myMaterial5", scene);
+    
+                    // there was another , true in the video texture doesn't seem to mind it gone and now looks like example on site
+                    var videoTexture = new BABYLON.VideoTexture("video", ["vids/fxcolors.webm"], scene, true);
+                    myMaterial5.diffuseTexture = videoTexture;
+                    // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
+                    var sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 10, scene);
+                    
+        
+                    // sphere bottomright
+                    sphere.position.y = 10;
+                    sphere.position.x = 10;
+                    sphere.position.z = 8;
+                    sphere.material = sphereMaterial1;
+                    sphere.checkCollisions = true;
+                    //ball.physicsImposter = new BABYLON.PhysicsImpostor(ball, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 0.08, restitution: 0.9 }, scene);
+                    sphere.physicsImpostor = new BABYLON.PhysicsImpostor(sphere, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: 0.9}, scene);
+                    sphere.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,1,0)); 
+                    //using quanternian instead of Vector3
+        //            sphere.physicsImpostor.setAngularVelocity(new BABYLON.Quaternian(10, 0, 10, 0));
+                    // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
+                    var sphere2 = BABYLON.Mesh.CreateSphere("sphere2", 16, 10, scene);
+        
+                    // sphere2 upperleft
+                
+                    sphere2.position.y = 10;
+                    sphere2.position.x = -10;
+                    sphere2.position.z = -8
+                    sphere2.material = sphereMaterial2;
+                    sphere2.checkCollisions = true;
+                    //ball.physicsImposter = new BABYLON.PhysicsImpostor(ball, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 0.08, restitution: 0.9 }, scene);
+                    sphere2.physicsImpostor = new BABYLON.PhysicsImpostor(sphere2, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: 0.9}, scene);
+                    sphere2.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,-1,0)); 
+                    //    sphere2.material.diffuseColor = new BABYLON.Color3.Yellow;
+                    // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
+                    var sphere3 = BABYLON.Mesh.CreateSphere("sphere3", 16, 10, scene);
+        
+                    // sphere3 upperright
+                    sphere3.position.y = 10;
+                    sphere3.position.z = 10;
+                    sphere3.position.x = -8;
+                    sphere3.material = sphereMaterial3;
+                    sphere3.checkCollisions = true;
+                    //ball.physicsImposter = new BABYLON.PhysicsImpostor(ball, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 0.08, restitution: 0.9 }, scene);
+                    sphere3.physicsImpostor = new BABYLON.PhysicsImpostor(sphere3, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: 0.9}, scene);
+                    sphere3.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,1,0)); 
+                    // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
+                    var sphere4 = BABYLON.Mesh.CreateSphere("sphere4", 16, 10, scene);
+        
+                    // sphere4 bottomleft
+                    sphere4.position.y = 10;
+                    sphere4.position.z = -10;
+                    sphere4.position.x = 8;
+                    sphere4.material = sphereMaterial4;
+                    sphere4.checkCollisions = true;
+                    //ball.physicsImposter = new BABYLON.PhysicsImpostor(ball, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 0.08, restitution: 0.9 }, scene);
+                    sphere4.physicsImpostor = new BABYLON.PhysicsImpostor(sphere4, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: 0.9}, scene);
+                    sphere4.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,-1,0)); 
+                         
+                                                                  // make sure all mesh have a .material
+                       // for (builder in scene.meshes) {
+                       //     var m = scene.meshes[builder];
+                       //     if (m != gizmo)
+                       //         m.parent = gizmo;
+                       //     if (!m.material) {
+                       //         m.material = new BABYLON.StandardMaterial(m.name + "_mat", scene)
+                       //     }
+                       // }
+
+                                  BABYLON.SceneLoader.ImportMesh("","babylondist/3dfiles/","appartment12storey.babylon", scene, function (builder) {
+                        
+
+               
+                                    console.log("building is " + builder.length);
+
+                                        console.log("master created");
+                                        console.log(builder[0].name);
+
+
+                                    builder[0].material = buildingMaterial;
+                                    builder[1].material = buildingMaterial;
+                                    builder[2].material = buildingMaterial;
+                                    builder[3].material = buildingMaterial;
+                                    builder[4].material = buildingMaterial;
+                                    //console.log("check created");
+                                    builder[5].material = buildingMaterial;
+                                    builder[6].material = buildingMaterial;
+                                    builder[7].material = buildingMaterial;
+                                    builder[8].material = buildingMaterial;
+                                    builder[9].material = buildingMaterial;
+                                    builder[10].material = buildingMaterial;
+                                    builder[11].material = buildingMaterial;
+                                    builder[12].material = buildingMaterial;
+                                    builder[13].material = buildingMaterial;
+
+                                    console.log("material assigned");
+
+
+                                    builder[0].parent = master;
+                                    builder[1].parent = master;
+                                    builder[2].parent = master;
+                                    builder[3].parent = master;
+                                    builder[4].parent = master;
+                                    builder[5].parent = master;
+                                    builder[6].parent = master;
+                                    builder[7].parent = master;
+                                    builder[8].parent = master;
+                                    builder[9].parent = master;
+                                    builder[10].parent = master;
+                                    builder[11].parent = master;
+                                    builder[12].parent = master;
+                                    builder[13].parent = master;
+                                   
+                                    console.log("parent assigned");
+
+                                    
+                                    /*building[0].position = new BABYLON.Vector3(0,30,0);
+                                    building[1].position = new BABYLON.Vector3(0,30,0);
+                                    building[2].position = new BABYLON.Vector3(0,30,0);
+                                    building[3].position = new BABYLON.Vector3(0,30,0);
+                                    building[4].position = new BABYLON.Vector3(0,30,0);
+                                    building[5].position = new BABYLON.Vector3(0,30,0);
+                                    building[6].position = new BABYLON.Vector3(0,30,0);
+                                    building[7].position = new BABYLON.Vector3(0,30,0);
+                                    building[8].position = new BABYLON.Vector3(0,30,0);
+                                    building[9].position = new BABYLON.Vector3(0,30,0);
+                                    building[10].position = new BABYLON.Vector3(0,30,0);
+                                    building[11].position = new BABYLON.Vector3(0,30,0);
+                                    building[12].position = new BABYLON.Vector3(0,30,0);
+                                    building[13].position = new BABYLON.Vector3(0,30,0);
+                                    building[14].position = new BABYLON.Vector3(0,30,0);    
+                                      */  
+                                //myheart[0].parent = master;
+                                //myheart[1].parent = master;
+                                //myheart[2].parent = master;
+                                //console.log(myheart.length());
+                                //myheart[3].parent = master;
+                                //myheart[4].parent = master;
+                                //myheart[5].parent = master;
+                                builder[12].position = new BABYLON.Vector3(10,0,10);
+                                master.scaling = new BABYLON.Vector3(5, 5, 5);
+                                master.position =  new BABYLON.Vector3(15, 0, 15);
+                                setTimeout(()=>builder[0].colorTo("diffuseColor", new BABYLON.Color3(1, 0, 0), 15), 500);
+                                setTimeout(()=>builder[1].colorTo("diffuseColor", new BABYLON.Color3(1, 0, 0), 15), 500);
+                                setTimeout(()=>builder[2].colorTo("diffuseColor", new BABYLON.Color3(1, 0, 0), 15),  500);
+                                setTimeout(()=>builder[3].colorTo("diffuseColor", new BABYLON.Color3(1, 0, 0), 15), 500);
+                                setTimeout(()=>builder[4].colorTo("diffuseColor", new BABYLON.Color3(1, 0, 0), 15), 500);
+                                setTimeout(()=>builder[5].colorTo("diffuseColor", new BABYLON.Color3(1, 0, 0), 15), 500);
+                                setTimeout(()=>builder[6].colorTo("diffuseColor", new BABYLON.Color3(1, 0, 0), 15), 500);
+                                setTimeout(()=>builder[7].colorTo("diffuseColor", new BABYLON.Color3(1, 0, 0), 15), 500);
+                                setTimeout(()=>builder[8].colorTo("diffuseColor", new BABYLON.Color3(1, 0, 0), 15), 500);
+                                setTimeout(()=>builder[9].colorTo("diffuseColor", new BABYLON.Color3(1, 0, 0), 15), 500);
+                                setTimeout(()=>builder[10].colorTo("diffuseColor", new BABYLON.Color3(1, 0, 0), 15), 500);
+                                setTimeout(()=>builder[11].colorTo("diffuseColor", new BABYLON.Color3(1, 0, 0), 15), 500);
+                                setTimeout(()=>builder[12].colorTo("diffuseColor", new BABYLON.Color3(1, 0, 0), 15), 500);
+                                setTimeout(()=>builder[13].colorTo("diffuseColor", new BABYLON.Color3(1, 0, 0), 15), 500);
+                                
+                                setTimeout(()=>builder[0].colorTo("diffuseColor", new BABYLON.Color3(-1, 0, 1), 15), 12500);
+                                setTimeout(()=>builder[1].colorTo("diffuseColor", new BABYLON.Color3(-1, 0, 1), 15), 12500);
+                                setTimeout(()=>builder[2].colorTo("diffuseColor", new BABYLON.Color3(-1, 0, 1), 15), 12500);
+                                setTimeout(()=>builder[3].colorTo("diffuseColor", new BABYLON.Color3(-1, 0, 1), 15), 12500);
+                                setTimeout(()=>builder[4].colorTo("diffuseColor", new BABYLON.Color3(-1, 0, 1), 15), 12500);
+                                setTimeout(()=>builder[5].colorTo("diffuseColor", new BABYLON.Color3(-1, 0, 1), 15), 12500);
+                                setTimeout(()=>builder[6].colorTo("diffuseColor", new BABYLON.Color3(-1, 0, 1), 15), 12500);
+                                setTimeout(()=>builder[7].colorTo("diffuseColor", new BABYLON.Color3(-1, 0, 1), 15), 12500);
+                                setTimeout(()=>builder[8].colorTo("diffuseColor", new BABYLON.Color3(-1, 0, 1), 15), 12500);
+                                setTimeout(()=>builder[9].colorTo("diffuseColor", new BABYLON.Color3(-1, 0, 1), 15), 12500);
+                                setTimeout(()=>builder[10].colorTo("diffuseColor", new BABYLON.Color3(-1, 0, 1), 15), 12500);
+                                setTimeout(()=>builder[11].colorTo("diffuseColor", new BABYLON.Color3(-1, 0, 1), 15), 12500);
+                                setTimeout(()=>builder[12].colorTo("diffuseColor", new BABYLON.Color3(-1, 0, 1), 15), 12500);
+                                setTimeout(()=>builder[13].colorTo("diffuseColor", new BABYLON.Color3(-1, 0, 1), 15), 12500);
+                                setTimeout(()=>console.log("start ct1"), 12500);
+                                
+                                /*setTimeout(()=>function(){builder[12].material.diffuseColor.dispose();}, 1000);
+                                //if(builder[12].material)
+                                  //  {console.log("didn't work");}
+                                setTimeout(()=>function(){builder[0] = buildingMaterial2}, 4000);
+                                setTimeout(()=>function(){builder[1] = buildingMaterial2}, 4000);
+                                setTimeout(()=>function(){builder[2] = buildingMaterial2}, 4000);
+                                setTimeout(()=>function(){builder[3] = buildingMaterial2}, 4000);
+                                setTimeout(()=>function(){builder[4] = buildingMaterial2}, 4000);
+                                setTimeout(()=>function(){builder[5] = buildingMaterial2}, 4000);
+                                setTimeout(()=>function(){builder[6] = buildingMaterial2}, 4000);
+                                setTimeout(()=>function(){builder[7] = buildingMaterial2}, 4000);
+                                setTimeout(()=>function(){builder[8] = buildingMaterial2}, 4000);
+                                setTimeout(()=>function(){builder[9] = buildingMaterial2}, 4000);
+                                setTimeout(()=>function(){builder[10] = buildingMaterial2}, 4000);
+                                setTimeout(()=>function(){builder[11] = buildingMaterial2}, 4000);
+                                setTimeout(()=>function(){builder[12] = buildingMaterial2}, 4000);
+                                setTimeout(()=>function(){builder[13] = buildingMaterial2}, 4000);
+*/
+                                setTimeout(()=>builder[0].colorTo("diffuseColor", new BABYLON.Color3(0, 0, -1), 15), 28000);
+                                setTimeout(()=>builder[1].colorTo("diffuseColor", new BABYLON.Color3(0, 0, -1), 15), 28000);
+                                setTimeout(()=>builder[2].colorTo("diffuseColor", new BABYLON.Color3(0, 0, -1), 15), 28000);
+                                setTimeout(()=>builder[3].colorTo("diffuseColor", new BABYLON.Color3(0, 0, -1), 15), 28000);
+                                setTimeout(()=>builder[4].colorTo("diffuseColor", new BABYLON.Color3(0, 0, -1), 15), 28000);
+                                setTimeout(()=>builder[5].colorTo("diffuseColor", new BABYLON.Color3(0, 0, -1), 15), 28000);
+                                setTimeout(()=>builder[6].colorTo("diffuseColor", new BABYLON.Color3(0, 0, -1), 15), 28000);
+                                setTimeout(()=>builder[7].colorTo("diffuseColor", new BABYLON.Color3(0, 0, -1), 15), 28000);
+                                setTimeout(()=>builder[8].colorTo("diffuseColor", new BABYLON.Color3(0, 0, -1), 15), 28000);
+                                setTimeout(()=>builder[9].colorTo("diffuseColor", new BABYLON.Color3(0, 0, -1), 15), 28000);
+                                setTimeout(()=>builder[10].colorTo("diffuseColor", new BABYLON.Color3(0, 0, -1), 15), 28000);
+                                setTimeout(()=>builder[11].colorTo("diffuseColor", new BABYLON.Color3(0, 0, -1), 15), 28000);
+                                setTimeout(()=>builder[12].colorTo("diffuseColor", new BABYLON.Color3(0, 0, -1), 15), 28000);
+                                setTimeout(()=>builder[13].colorTo("diffuseColor", new BABYLON.Color3(0, 0, -1), 15), 28000);
+                                setTimeout(()=>console.log("start ct2"), 28000);
+                               console.log("done");
+                   }, null, null, null);
+/* BABYLON.SceneLoader.ImportMesh("","3dfiles/","low_poly_earth.babylon", scene, function (earthy) {
+                        
+
+               
+                                    console.log("earth is " + earthy.length);
+
+                                        console.log("master created");
+                                        console.log(earthy[0].name);
+                                        console.log(earthy[1].name);
+
+
+                                    earthy[0].material = earthgroundMaterial;
+                                    earthy[1].material = earthwaterMaterial;
+                                    console.log("material assigned");
+
+
+                                    earthy[0].parent = master2;
+                                   
+                                    console.log("parent assigned");
+
+                                    
+                                //myheart[0].parent = master;
+                                //myheart[1].parent = master;
+                                //myheart[2].parent = master;
+                                //console.log(myheart.length());
+                                //myheart[3].parent = master;
+                                //myheart[4].parent = master;
+                                //myheart[5].parent = master;
+                                master2.scaling = new BABYLON.Vector3(5, 5, 5);
+                                master2.position =  new BABYLON.Vector3(0, 0, 0);
+                             
+                   }, null, null, null);*/
+//colorTo("diffuseColor", new BABYLON.Color3(0, 2, 0), 5, master);
+/*
+//Create a scaling animation at 30 FPS
+    var animationBox = new BABYLON.Animation("tutoAnimation", "emissiveColor.Color3", 30, BABYLON.Animation.ANIMATIONTYPE_COLOR3,
+                                                                    BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    //Here we have chosen a loop mode, but you can change to :
+    //  Use previous values and increment it (BABYLON.Animation.ANIMATIONLOOPMODE_RELATIVE)
+    //  Restart from initial value (BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE)
+    //  Keep the final value (BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT)
+
+    // Animation keys
+    var keys = [];
+    //At the animation key 0, the value of scaling is "1"
+    keys.push({
+        frame: 0,
+        value: new BABYLON.Color3(0, .1, 0)
+    });
+
+    //At the animation key 20, the value of scaling is "0.2"
+    keys.push({
+        frame: 20,
+        value:new BABYLON.Color3(0, 1, 0)
+    });
+
+    //At the animation key 100, the value of scaling is "1"
+    keys.push({
+        frame: 100,
+        value: new BABYLON.Color3(0, .1, 0)
+    });
+
+    //Adding keys to the animation object
+    animationBox.setKeys(keys);
+
+    //Then add the animation object to box1
+    master.animations.push(animationBox);
+
+    //Finally, launch animations on box1, from key 0 to key 100 with loop activated
+    scene.beginAnimation(master, 0, 100, true);
+*/
+  
+                //create some ground with a heightmap
+                var ground = CreateGround(scene);
+           
+        
+                function CreateGround(scene) {
+                var ground = new BABYLON.Mesh.CreateGroundFromHeightMap("ground", "babylondist/images/hmapsquare.png", 1000, 1000, 20, 0, 200, scene, false, OnGroundCreated);
+        
+                console.log(ground);
+            
+                    function OnGroundCreated() {
+                        var groundMaterial = new BABYLON.StandardMaterial("groundMaterial", scene);
+                        groundMaterial.diffuseTexture = new BABYLON.Texture("babylondist/images/spacey.jpg", scene);
+                        ground.material = groundMaterial;
+                        ground.checkCollisions = true;
+                        ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground,
+                    BABYLON.PhysicsImpostor.HeightmapImpostor, { mass: 0 }, scene);
+                        console.log(ground);
+                        }
+                        return ground;
+                 }
+                 
+            //pickAction(ground);  
+
+                    // This forces the default browser menu that 
+                    // appears when you right click mouse button
+                    // to not appear
+            document.oncontextmenu = function() { return false };
+        
+                    //used now instead of onPointerDown/up/move which may or may not still work.
+                    //still need to understand how to fully use pickinfo and what could go in null values
+                    //first null is something about predicate function second null is fastcheck boolean
+                    var current = 0;
+                   scene.onPointerObservable.add(function (evt) {
+                    if (evt.type === BABYLON.PointerEventTypes.POINTERDOWN) {
+                        //button 0 for left mouse
+                        //button 1 for middle mouse
+                        // button 2 for right mouse
+                        console.log( "botton :: " + evt.event.button);
+                        var pickInfo = scene.pick(scene.pointerX,scene.pointerY,null,null,camera);
+                        console.log('picked Mesh', pickInfo.pickedMesh.id);
+                        var guess;
+                        if (pickInfo.pickedMesh.id === "sphere1" && evt.event.button === 0)
+                        {
+            				setTimeout(()=>sphere.colorTo("diffuseColor", new BABYLON.Color3(1, 0, 0), 20), 100);
+            				setTimeout(()=>console.log("made 1"), 500);
+            				setTimeout(()=>sphere.colorTo("diffuseColor", new BABYLON.Color3(-1, 0, 0), 20), 1500);
+            				setTimeout(()=>console.log("made 2"), 1500); 
+            				guess = 1;
+                        }
+                        if (pickInfo.pickedMesh.id === "sphere2" && evt.event.button === 0)
+                        {
+            				setTimeout(()=>sphere2.colorTo("diffuseColor", new BABYLON.Color3(1, 0, 0), 20), 100);
+            				setTimeout(()=>console.log("made 1"), 500);
+            				setTimeout(()=>sphere2.colorTo("diffuseColor", new BABYLON.Color3(-1, 0, 0), 20), 1500);
+            				setTimeout(()=>console.log("made 2"), 1500); 
+            				guess = 2;
+
+                        }
+                        if (pickInfo.pickedMesh.id === "sphere3" && evt.event.button === 0)
+                        {
+            				setTimeout(()=>sphere3.colorTo("diffuseColor", new BABYLON.Color3(1, 0, 0), 20), 100);
+            				setTimeout(()=>console.log("made 1"), 500);
+            				setTimeout(()=>sphere3.colorTo("diffuseColor", new BABYLON.Color3(-1, 0, 0), 20), 1500);
+            				setTimeout(()=>console.log("made 2"), 1500);
+            				guess = 3; 
+                        }
+                        if (pickInfo.pickedMesh.id === "sphere4" && evt.event.button === 0)
+                        {
+            				setTimeout(()=>sphere4.colorTo("diffuseColor", new BABYLON.Color3(1, 0, 0), 20), 100);
+            				setTimeout(()=>console.log("made 1"), 500);
+            				setTimeout(()=>sphere4.colorTo("diffuseColor", new BABYLON.Color3(-1, 0, 0), 20), 1500);
+            				setTimeout(()=>console.log("made 2"), 1500);  
+            				guess = 4;
+
+                        }
+                        if (guess === correctWay[current])
+                        {
+                        	console.log("right!");
+                        	current = current + 1;
+                        	if(current > 2)
+                        	{
+                        		console.log("win");
+                        		current = 0;
+                        	}
+                        } else {
+                        	console.log("WRONG");
+                        }
+
+                        if (pickInfo.pickedMesh.id === "ground" && evt.event.button === 0) {
+
+                        //var diffX = pickInfo.pickedPoint.x - sphere.position.x;
+                        //var diffZ = pickInfo.pickedPoint.z - sphere.position.z;
+            
+                        //startPosition = sphere.position;
+                        //endPosition = pickInfo.pickedPoint;
+                        //totalDistance = BABYLON.Vector3.Distance(startPosition, endPosition);
+                        //startTime = new Date();
+                        //moveFlag = true;
+                        console.log(pickInfo.pickedPoint);
+                        }
+
+                        if (evt.event.button === 2)
+                        {
+                            //sphere.physicsImpostor = new BABYLON.PhysicsImpostor(sphere, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: 0.9}, scene);
+                            //sphere.physicsImpostor.applyImpulse(new BABYLON.Vector3(0,1,0), sphere.getAbsolutePosition);
+                            //sphere2.physicsImpostor.applyImpulse(new BABYLON.Vector3(0,1,0), sphere2.getAbsolutePosition);
+                            //sphere3.physicsImpostor.applyImpulse(new BABYLON.Vector3(0,1,0), sphere3.getAbsolutePosition);
+                            //sphere4.physicsImpostor.applyImpulse(new BABYLON.Vector3(0,1,0), sphere4.getAbsolutePosition); 
+                            sphere.position.y = 10;
+                            sphere.position.x = 10;
+                            sphere.position.z = 8;
+                            sphere.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,1,0)); 
+                           // sphere.physicsImposter
+                                sphere2.position.y = 10;
+                    sphere2.position.x = -10;
+                    sphere2.position.z = -8
+                    sphere2.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,-1,0)); 
+                    sphere3.position.y = 10;
+                    sphere3.position.z = 10;
+                    sphere3.position.x = -8;
+                    sphere3.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,1,0)); 
+                    sphere4.position.y = 10;
+                    sphere4.position.z = -10;
+                    sphere4.position.x = 8;
+                    sphere4.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,-1,0)); 
+                    
+                        }
+                        //colorfoo();
+                        }
+                    });
+        
+          
+                sphere.actionManager = new BABYLON.ActionManager(scene);
+                sphere2.actionManager = new BABYLON.ActionManager(scene);
+                sphere3.actionManager = new BABYLON.ActionManager(scene);
+                sphere4.actionManager = new BABYLON.ActionManager(scene);
+        
+            var pickAction = function (mesh) {
+                mesh.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
+             BABYLON.ActionManager.OnLongPressTrigger,
+        function (evt) {
+                        //button 0 for left mouse
+                        //button 1 for middle mouse
+                        // button 2 for right mouse
+            console.log( "Long Press With Button " + evt.sourceEvent.button);
+            if (evt.sourceEvent.button === 0){
+                            sphere.material = myMaterial5;
+                            sphere2.material = myMaterial5;
+                            sphere3.material = myMaterial5;
+                            sphere4.material = myMaterial5;
+                                    videoTexture.video.play();
+
+
+    
+            }
+        }
+        ));
+        
+            }
+        
+            pickAction(sphere);
+            pickAction(sphere2);
+            pickAction(sphere3);
+            pickAction(sphere4);
+            // Conditions
+  
+    var done = function() {
+        scene.clearColor = BABYLON.Color3.Random();
+    }
+    BABYLON.Animation.CreateAndStartAnimation(
+        "test",  // name
+        ground, //node
+        "rotation.y", // targprop
+        10, // fps
+        30, // totalFrames
+        0, // from
+        Math.PI*2, // to
+        0, // loopMode
+        null, // easing
+        done // onStop func
+    );
+    sphere.actionManager = new BABYLON.ActionManager(scene);
+    var condition1 = new BABYLON.StateCondition(sphere.actionManager, light, "off");
+    var condition2 = new BABYLON.StateCondition(sphere.actionManager, light, "on");
+
+    sphere.actionManager.registerAction(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnLeftPickTrigger, camera, "alpha", 0, 500, condition1));
+    sphere.actionManager.registerAction(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnLeftPickTrigger, camera, "alpha", Math.PI, 500, condition2));
+
+    // Over/Out
+    var makeOverOut = function (mesh) {
+        //mesh.actionManager.registerAction(new BABYLON.SetValueAction(BABYLON.ActionManager.OnPointerOutTrigger, mesh.material, "emissiveColor", mesh.material.emissiveColor));
+        //mesh.actionManager.registerAction(new BABYLON.SetValueAction(BABYLON.ActionManager.OnPointerOverTrigger, mesh.material, "emissiveColor", BABYLON.Color3.Red()));
+        /////////////////////////////////////////
+        //mesh.actionManager.registerAction(new BABYLON.SetValueAction(BABYLON.ActionManager.OnPointerOutTrigger, mesh.material, "diffuseColor", mesh.material.diffuseColor));
+        //mesh.actionManager.registerAction(new BABYLON.SetValueAction(BABYLON.ActionManager.OnPointerOverTrigger, mesh.material, "diffuseColor", BABYLON.Color3.Red()));
+        //mesh.actionManager.registerAction(new BABYLON.SetValueAction(BABYLON.ActionManager.OnPointerOutTrigger, mesh.PhysicsImpostor, "applyImpulse", (new BABYLON.Vector3(0,1,0), mesh.getAbsolutePosition), true)); 
+        //mesh.actionManager.registerAction(new BABYLON.SetValueAction(BABYLON.ActionManager.OnKeyDownTrigger, mesh.PhysicsImpostor, "setAngularVelocity", new BABYLON.Vector3(0,1,0)));
+    /*    mesh.actionManager.registerAction(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPointerOutTrigger, mesh.material, "diffuseColor", mesh.material.diffuseColor, 2000, null, false));
+        mesh.actionManager.registerAction(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPointerOverTrigger, mesh.material, "diffuseColor", BABYLON.Color3.Red(), 2000, null, false));*/
+        mesh.actionManager.registerAction(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPointerOutTrigger, mesh, "scaling", new BABYLON.Vector3(1, 1, 1), 1150, null, false));
+        mesh.actionManager.registerAction(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPointerOverTrigger, mesh, "scaling", new BABYLON.Vector3(1.1, 1.1, 1.1), 1150, null, false));
+        //these two lines somewhat work
+        //mesh.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPointerOutTrigger, mesh.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,-1,0))));
+        //mesh.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPointerOverTrigger, mesh.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,-1,0))));// Executes 
+//mesh.actionManager.registerAction(new BABYLON.SetValueAction(BABYLON.ActionManager.OnKeyDownTrigger, mesh.PhysicsImpostor, "setAngularVelocity", new BABYLON.Vector3(0,1,0)));
+//scene.actionManager.registerAction(
+     // mesh.actionManager.registerAction(new BABYLON.InterpolateValueAction({trigger: BABYLON.ActionManager.OnKeyDownTrigger,
+       //     parameter: 'w'}, mesh.material, "diffuseColor", mesh.material.diffuseColor, 2000));//);
+   /* new BABYLON.ExecuteCodeAction(
+        {
+            trigger: BABYLON.ActionManager.OnKeyUpTrigger,
+            parameter: 'w'
+        },
+        
+        function () { console.log('r button was pressed'); }*/
+    //)
+//);
+    }
+
+    //makeOverOut(redBox);
+    //makeOverOut(greenBox);
+    //makeOverOut(blueBox);
+    makeOverOut(sphere);
+    makeOverOut(sphere2);
+    makeOverOut(sphere3);
+    makeOverOut(sphere4);
+/*
+    // scene's actions
+    scene.actionManager = new BABYLON.ActionManager(scene);
+
+    var rotate = function (mesh) {
+        scene.actionManager.registerAction(new BABYLON.IncrementValueAction(BABYLON.ActionManager.OnEveryFrameTrigger, mesh, "rotation.y", 0.01));
+    }
+
+    rotate(redBox);
+    rotate(greenBox);
+    rotate(blueBox);
+
+    // Intersections
+    donut.actionManager = new BABYLON.ActionManager(scene);
+
+    donut.actionManager.registerAction(new BABYLON.SetValueAction(
+        { trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger, parameter: sphere },
+        donut, "scaling", new BABYLON.Vector3(1.2, 1.2, 1.2)));
+
+    donut.actionManager.registerAction(new BABYLON.SetValueAction(
+        { trigger: BABYLON.ActionManager.OnIntersectionExitTrigger, parameter: sphere }
+        , donut, "scaling", new BABYLON.Vector3(1, 1, 1)));
+
+    // Animations
+    var alpha = 0;
+    scene.registerBeforeRender(function () {
+        donut.position.x = 100 * Math.cos(alpha);
+        donut.position.y = 5;
+        donut.position.z = 100 * Math.sin(alpha);
+        alpha += 0.01;
+    });
+*/
+scene.actionManager.registerAction(
+    new BABYLON.ExecuteCodeAction(
+        {
+            trigger: BABYLON.ActionManager.OnKeyUpTrigger,
+            parameter: 'r'
+        },
+        function () { console.log('r button was pressed'); }
+    )
+);
+scene.actionManager.registerAction(
+      new BABYLON.InterpolateValueAction({trigger: BABYLON.ActionManager.OnKeyDownTrigger,
+            parameter: 'c'}, sphere.material, "diffuseColor", BABYLON.Color3.Red(), 6000));
+scene.actionManager.registerAction(
+      new BABYLON.InterpolateValueAction({trigger: BABYLON.ActionManager.OnKeyDownTrigger,
+            parameter: 'v'}, sphere.material, "diffuseColor", sphere.material.diffuseColor, 2000));
+        scene.actionManager.registerAction(new BABYLON.InterpolateValueAction({trigger: BABYLON.ActionManager.OnKeyDownTrigger, parameter: 'n'}, sphere, "scaling", new BABYLON.Vector3(1, 1, 1), 1150));
+        scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction({ trigger: BABYLON.ActionManager.OnKeyDownTrigger, parameter: 'n'}, function (){shrink(sphere);}));
+
+        scene.actionManager.registerAction(new BABYLON.InterpolateValueAction({trigger: BABYLON.ActionManager.OnKeyDownTrigger, parameter: 'b'}, sphere, "scaling", new BABYLON.Vector3(1.1, 1.1, 1.1), 1150));
+
+        scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction({ trigger: BABYLON.ActionManager.OnKeyDownTrigger, parameter: 'b'}, function(){grow(sphere);} ));
+        scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction({ trigger: BABYLON.ActionManager.OnKeyDownTrigger, parameter: 's'}, function(){selectsequence();} ));
+
+   function grow(mesh){
+            console.log('b button was pressed'); 
+            sphere.position.y = 3;
+            sphere.position.x = 10;
+            sphere.position.z = 8;
+            sphere.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,1,0));
+   };
+   function shrink(mesh){
+            console.log('n button was pressed'); 
+            sphere.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,1,0));
+   };
+
+   function selectsequence(){
+           var nummy = randomIntFromInterval(1,4);
+           var nummy2 = randomIntFromInterval(1,4);
+           var nummy3 = randomIntFromInterval(1,4); 
+           correctWay[0] = nummy;
+           correctWay[1] = nummy2;
+           correctWay[2] = nummy3;                                                                                                                     
+        console.log("nummy :" + nummy);
+        console.log("nummy2 :" + nummy2);
+        console.log("nummy3 :" + nummy3);
+        blinkme(nummy);
+        setTimeout(()=>blinkme(nummy2), 2000);
+        setTimeout(()=>console.log("2done"), 2000);
+        setTimeout(()=>blinkme(nummy3), 4000);
+        setTimeout(()=>console.log("3done"), 4000);
+//setTimeout(()=>builder[4].colorTo("diffuseColor", new BABYLON.Color3(0, 0, -1), 15), 28000);
+
+ 
+    };                                                                                                                                                                                                                          
+  /*  if (isWPressed === true)
+    {
+        sphere.material = myMaterial5;
+    }
+*/
+  /*  document.addEventListener("keydown", function (event) {
+        if (event.key == 'w' || event.key == 'W') {
+            isWPressed = true;
+            console.log(isWPressed);
+            sphere.material = myMaterial5;
+        }
+        if (event.key == 's' || event.key == 'S') {
+            isSPressed = true;
+        }
+        if (event.key == 'a' || event.key == 'A') {
+            isAPressed = true;  
+        }
+        if (event.key == 'd' || event.key == 'D') {
+            isDPressed = true;
+        }
+
+    });
+
+    document.addEventListener("keyup", function (event) {
+        if (event.key == 'w' || event.key == 'W') {
+            isWPressed = false;
+        }
+        if (event.key == 's' || event.key == 'S') {
+            isSPressed = false;
+        }
+        if (event.key == 'a' || event.key == 'A') {
+            isAPressed = false;
+        }
+        if (event.key == 'd' || event.key == 'D') {
+            isDPressed = false;
+        }
+});*/
+
+
+
+
+    /*        engine.runRenderLoop(function () {
+
+                                        if (moveFlag) {
+            var currentTime = new Date();
+            var deltaTime = (currentTime.valueOf() - startTime.valueOf());
+            var frames = 60;
+            var speed = 1 / frames;
+            var distCovered = deltaTime * speed;
+            var fracDistance = distCovered / totalDistance;
+            fracDistance = Math.min(fracDistance, 1);
+
+            if (fracDistance === 1) {
+                moveFlag = false;
+                return;
+            }
+
+            sphere.position = BABYLON.Vector3.Lerp(startPosition, endPosition, fracDistance);
+
+            camera.setTarget(sphere.position);
+            camera.update();
+            }
+        });
+*/
+
+
+				function blinkme(nummy)
+				{
+					if (nummy === 1){
+            
+       //scene.actionManager.registerAction(
+        //new BABYLON.InterpolateValueAction({trigger: BABYLON.ActionManager.OnKeyUpTrigger, parameter: 's'}, sphere.material, "diffuseColor", BABYLON.Color3.Red(), 2000, null, false)).then(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.NothingTrigger, sphere.material, "diffuseColor", sphere.material.diffuseColor, 2000, null, false));
+        //new BABYLON.InterpolateValueAction(BABYLON.ActionManager.NothingTrigger, sphere.material, "diffuseColor", sphere.material.diffuseColor, 2000, null, false);
+            setTimeout(()=>sphere.colorTo("diffuseColor", new BABYLON.Color3(1, 0, 0), 15), 500);
+            setTimeout(()=>console.log("made 1"), 500);
+            setTimeout(()=>sphere.colorTo("diffuseColor", new BABYLON.Color3(-1, 0, 0), 15), 2500);
+            setTimeout(()=>console.log("made 2"), 1500);
+           /* setTimeout(()=>sphere.colorTo("diffuseColor", new BABYLON.Color3(0, 0, -1), 1), 28000);
+            setTimeout(()=>console.log("made 3"), 28000);*/
+            console.log("pressed");
+        } else if (nummy === 2){
+            
+            setTimeout(()=>sphere2.colorTo("diffuseColor", new BABYLON.Color3(1, 0, 0), 15), 500);
+            setTimeout(()=>console.log("made 1"), 500);
+            setTimeout(()=>sphere2.colorTo("diffuseColor", new BABYLON.Color3(-1, 0, 0), 15), 2500);
+            setTimeout(()=>console.log("made 2"), 1500);
+        
+        } else if (nummy === 3){
+            
+            setTimeout(()=>sphere3.colorTo("diffuseColor", new BABYLON.Color3(1, 0, 0), 15), 500);
+            setTimeout(()=>console.log("made 1"), 500);
+            setTimeout(()=>sphere3.colorTo("diffuseColor", new BABYLON.Color3(-1, 0, 0), 15), 2500);
+            setTimeout(()=>console.log("made 2"), 1500);
+        
+        } else if (nummy === 4){
+            
+            setTimeout(()=>sphere4.colorTo("diffuseColor", new BABYLON.Color3(1, 0, 0), 15), 500);
+            setTimeout(()=>console.log("made 1"), 500);
+            setTimeout(()=>sphere4.colorTo("diffuseColor", new BABYLON.Color3(-1, 0, 0), 15), 2500);
+            setTimeout(()=>console.log("made 2"), 1500);
+        
+        }else (nummy)
+        {console.log(nummy + "elsed");}
+				}
+
+
+                function randomIntFromInterval(min,max)
+                    {
+                        return Math.floor(Math.random()*(max-min+1)+min);
+                    }
+
+                return scene;
+                }//end createScene()
+                
+                var scene = createScene();
+        
+                engine.runRenderLoop(function () {
+                    if (scene) {
+                        scene.render();
+                    }
+                });
+        
+                // Resize
+                window.addEventListener("resize", function () {
+                    engine.resize();
+                });
+        
+        
+        
+        var scene = createScene()
+
+        engine.runRenderLoop(function () {
+            if (scene) {
+                scene.render();
+            }
+
+        });
+
+        // Resize
+        window.addEventListener("resize", function () {
+            engine.resize();
+        });
+    </script>
+</body>
+</html>
