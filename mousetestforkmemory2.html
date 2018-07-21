@@ -484,7 +484,6 @@
                     //still need to understand how to fully use pickinfo and what could go in null values
                     //first null is something about predicate function second null is fastcheck boolean
                     var current = 0;
-                    var prev;
                    scene.onPointerObservable.add(function (evt) {
                     if (evt.type === BABYLON.PointerEventTypes.POINTERDOWN) {
                         //button 0 for left mouse
@@ -528,33 +527,26 @@
             				guess = 4;
 
                         }
-                       
+                        var prev;
                         if (guess === correctWay[current])
                         {
                         	console.log("right!");
+                        	current = current + 1;
                             prev = current;
-                            prev = prev + 1;
-
-                        	//current = current + 1;
-                            //prev = current;
-                        	if(prev > 2)
+                        	if(current > 2)
                         	{
                         		console.log("win");
                         		plane.material = PMaterial4;
-                                prev = 0;
-                                //current = 0;
+                                prev = current;
+                                current = 0;
                                 
                         	}
-                        } else { 
+                        } 
+                        if (guess !== correctWay[prev]) { 
                         	console.log("WRONG");
-                            plane.material = PMaterial5;
+                            //lose condition
+                            //plane.material = PMaterial5;
                         }
-
-                        current = prev;
-                        //setTimeout(setcurrent(), 200);
-                        //function setcurrent(){
-                        //current = prev;
-                        //};
 
                         if (pickInfo.pickedMesh.id === "ground" && evt.event.button === 0) {
 
